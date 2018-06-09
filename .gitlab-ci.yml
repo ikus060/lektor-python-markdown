@@ -4,10 +4,6 @@ stages:
 - test
 - publish
 
-# Upgrade python and install dependencies to avoid compiling from sources.
-before_script:
-- apt-get update && apt-get -qq install asciidoc
-
 test:py27:
   stage: test
   script:
