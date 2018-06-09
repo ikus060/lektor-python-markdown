@@ -23,7 +23,7 @@ setup(
     long_description_content_type='text/markdown',
     name='lektor-asciidoc',
     py_modules=['lektor_asciidoc'],
-    tests_require=['pytest'],
+    tests_require=['lektor'],
     version='0.3',
     url='https://github.com/nixjdm/lektor-asciidoc',
     classifiers=[
