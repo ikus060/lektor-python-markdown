@@ -1,9 +1,9 @@
 body:
 
-== Header 1
+# Header 1
 
-Some text.
+## Header 2 {: .customclass}
 
------
+```
 code here
------
+```

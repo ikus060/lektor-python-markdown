@@ -1,0 +1,36 @@
+image: ikus060/docker-debian-py2-py3:stretch
+
+stages:
+- test
+- publish
+
+test:py27:
+  stage: test
+  script:
+  # Register the plugin entry point and run the test
+  - python2 setup.py develop
+  - python2 setup.py nosetests
+
+test:py3:
+  stage: test
+  script:
+  # Register the plugin entry point and run the test
+  - python3 setup.py develop
+  - python3 setup.py nosetests
+
+publish_pypi:
+  stage: publish
+  only:
+  - tags
+  script:
+  - pip install wheel twine --upgrade
+  - python setup.py sdist bdist_wheel
+  - twine upload dist/* -u $PYPI_USR -p $PYPI_PWD
+  
+github_push:
+  stage: publish
+  only:
+  - branches
+  script:
+  - git push --force https://${GITHUB_USR}:${GITHUB_PWD}@github.com/ikus060/lektor-python-markdown.git refs/remotes/origin/${CI_COMMIT_REF_NAME}:refs/heads/${CI_COMMIT_REF_NAME}
+  - git push https://${GITHUB_USR}:${GITHUB_PWD}@github.com/ikus060/lektor-python-markdown.git --tags
