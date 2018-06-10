@@ -15,7 +15,7 @@ import tempfile
 import unittest
 
 
-class TestLektorAsciidoc(unittest.TestCase):
+class TestLektorPythonMarkdown(unittest.TestCase):
 
     def setUp(self):
         self.project = Project.from_path(os.path.join(os.path.dirname(__file__), 'demo-project'))
