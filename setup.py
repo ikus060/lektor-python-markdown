@@ -25,7 +25,8 @@ setup(
     py_modules=['lektor_pythonmarkdown'],
     install_requires=['markdown'],
     tests_require=['lektor'],
-    version='0.3',
+    setup_requires=['setuptools_scm'],
+    use_scm_version=True,
     url='https://github.com/ikus060/lektor-python-markdown',
     classifiers=[
         'Environment :: Plugins',
