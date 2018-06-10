@@ -65,7 +65,7 @@ class PythonMarkdownConfig(object):
 
 class PythonMarkdownPlugin(Plugin):
     name = u'pythonmarkdown'
-    description = u'Adds AsciiDoc field type to Lektor.'
+    description = u'Add pythonmarkdownn field type to Lektor to make use of python-markdown as a renderer.'
 
     def on_setup_env(self, **extra):
         plugin_config = self.get_config()
