@@ -1,5 +1,7 @@
 # Lektor Python-Markdown Plugin
 
+[![pipeline status](http://git.patrikdufresne.com/pdsl/lektor-python-markdown/badges/master/pipeline.svg)](http://git.patrikdufresne.com/pdsl/lektor-python-markdown/commits/master)
+
 A [Lektor](https://www.getlektor.com/) plugin to parse markdown using
 [Python-Markdown](https://python-markdown.github.io/). By default, lektor
 uses [mistune](http://mistune.readthedocs.io/en/latest/) to parse markdown
