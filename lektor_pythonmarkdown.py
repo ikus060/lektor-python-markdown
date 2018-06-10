@@ -10,19 +10,9 @@ import markdown
 
 SECTION_EXTENSIONS = "extensions"
 SECTION_MARKDOWN = "markdown"
-
-DEFAULT_EXTENTIONS = [
-    "markdown.extensions.extra",
-    "markdown.extensions.admonition",
-    "markdown.extensions.codehilite",
-    "markdown.extensions.headerid",
-    "markdown.extensions.meta",
-    "markdown.extensions.nl2br",
-    "markdown.extensions.sane_lists",
-    "markdown.extensions.smarty",
-    "markdown.extensions.toc",
-    "markdown.extensions.wikilinks",
-]
+DEFAULT_EXTENTIONS = {
+    "markdown.extensions.extra": 1,
+}
 
 
 def pythonmarkdown_to_html(text, cfg):
