@@ -7,3 +7,17 @@ body:
 ```
 code here
 ```
+
+## Check url & image substitution
+
+[Link to Sub Page](sub-page)
+
+![alttxt](sub-page)
+
+## Check references
+
+I get 10 times more traffic from [Sub Page] [1] than from
+[Yahoo] [2].
+
+  [1]: sub-page/        "Sub Page"
+  [2]: http://search.yahoo.com/  "Yahoo Search"

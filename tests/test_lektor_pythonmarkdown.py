@@ -5,17 +5,18 @@ Created on Jun 8, 2018
 @author: Patrik Dufresne
 '''
 
-from lektor.builder import Builder
-from lektor.db import Database
-from lektor.environment import Environment
-from lektor.project import Project
 import os
 import shutil
 import tempfile
 import unittest
 
+from lektor.builder import Builder
+from lektor.db import Database
+from lektor.environment import Environment
+from lektor.project import Project
 
-class TestLektorAsciidoc(unittest.TestCase):
+
+class TestLektorPythonMarkdown(unittest.TestCase):
 
     def setUp(self):
         self.project = Project.from_path(os.path.join(os.path.dirname(__file__), 'demo-project'))
@@ -40,6 +41,13 @@ class TestLektorAsciidoc(unittest.TestCase):
         assert '<h2 class="customclass" id="header-2">Header 2</h2>' in html
         # The output changes depending on the version of python-markdown uses.
         assert '<pre class="codehilite"><code class="linenums">code here</code></pre>' in html
+        # Check url & image substitution
+        assert '<a href="./sub-page">Link to Sub Page</a>' in html
+        assert '<img alt="alttxt" src="./sub-page" />' in html
+        # Check references
+        assert '<a href="./sub-page/" title="Sub Page">Sub Page</a>' in html
+        assert '<a href="http://search.yahoo.com/" title="Yahoo Search">Yahoo</a>' in html
+        
 
 
 if __name__ == "__main__":
