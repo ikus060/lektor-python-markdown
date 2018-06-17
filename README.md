@@ -50,7 +50,7 @@ In that file you may write something similar to the following:
 #output_format = xhtml1
 #tab_length = 4
 #safe_mode = False
-#enable_attributes = False
+#enable_attributes = True
 #smart_emphasis = True
 #lazy_ol = True
 
