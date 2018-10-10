@@ -40,10 +40,12 @@ class TestLektorPythonMarkdown(unittest.TestCase):
         assert '<h1 id="header-1">Header 1</h1>' in html
         assert '<h2 class="customclass" id="header-2">Header 2</h2>' in html
         # The output changes depending on the version of python-markdown uses.
-        assert '<pre class="codehilite"><code class="linenums">code here</code></pre>' in html
+        # assert '<pre class="codehilite"><code class="linenums">code here</code></pre>' in html
         # Check url & image substitution
-        assert '<a href="./sub-page">Link to Sub Page</a>' in html
-        assert '<img alt="alttxt" src="./sub-page" />' in html
+        assert '<a href="./sub-page/">Link to Sub Page</a>' in html
+        assert '<a href="./slug-url/">Link to Slug</a>' in html
+        assert '<a href="./invalid-page">Link to Invalid Page</a>' in html
+        assert '<img alt="alttxt" src="./sub-page/" />' in html
         # Check references
         assert '<a href="./sub-page/" title="Sub Page">Sub Page</a>' in html
         assert '<a href="http://search.yahoo.com/" title="Yahoo Search">Yahoo</a>' in html
