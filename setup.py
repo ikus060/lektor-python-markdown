@@ -23,7 +23,7 @@ setup(
     long_description_content_type='text/markdown',
     name='lektor-pythonmarkdown',
     py_modules=['lektor_pythonmarkdown'],
-    install_requires=['markdown'],
+    install_requires=['markdown<3.0.0'],
     tests_require=['lektor'],
     setup_requires=['setuptools_scm'],
     use_scm_version=True,
