@@ -11,6 +11,9 @@ code here
 ## Check url & image substitution
 
 [Link to Sub Page](sub-page)
+[Link to Slug](sub-page-slug)
+[Link to Invalid Page](invalid-page)
+
 
 ![alttxt](sub-page)
 

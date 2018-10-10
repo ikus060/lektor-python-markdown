@@ -32,7 +32,7 @@ def sanitize_url(self, link):
     try:
         url = url_parse(link)
         if not url.scheme:
-            link = url_to("!" + link)
+            link = url_to(link)
     except:
         # Do not fail if something went wrong during the url parsing.
         pass
