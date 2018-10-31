@@ -117,6 +117,7 @@ class PythonMarkdown(object):
     def __init__(self, source, record=None):
         self.source = source
         self.__record = weakref(record) if record is not None else lambda: None
+        self.__cached_for_ctx = None
         self.__html = None
         self.__meta = None
 
@@ -126,9 +127,16 @@ class PythonMarkdown(object):
     __nonzero__ = __bool__
 
     def __render(self):
-        if self.__html is None:
-            self.__html = pythonmarkdown_to_html(self.source, self.__record())
-            self.__meta = None
+        # When the markdown instance is attached to a cached object we can
+        # end up in the situation where the context changed from the time
+        # we were put into the cache to the time where we got referenced
+        # by something elsewhere.  In that case we need to re-process our
+        # markdown.  For instance this affects relative links.
+        if self.__html is None or \
+           self.__cached_for_ctx != get_ctx():
+            self.__html = pythonmarkdown_to_html(
+                self.source, self.__record())
+            self.__cached_for_ctx = get_ctx()
 
     @property
     def meta(self):
