@@ -1,2 +1,16 @@
 [project]
 name = demo
+url_style=absolute
+
+[alternatives.en]
+name = English
+name[fr] = Anglais
+locale = en_US
+url_prefix = /en/
+
+[alternatives.fr]
+primary = yes
+name = French
+name[fr] = Français
+url_prefix = /fr/
+locale = fr
