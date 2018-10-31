@@ -33,7 +33,7 @@ def sanitize_url(self, link):
     if get_ctx() and get_ctx().record is not None:
         url = url_parse(link)
         if not url.scheme:
-            link = get_ctx().record.url_to(link,
+            link = get_ctx().record.url_to("!" + link,
                                       base_url=get_ctx().base_url)
     return LinkPattern.sanitize_url(self, link)
 
