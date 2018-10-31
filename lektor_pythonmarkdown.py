@@ -10,12 +10,13 @@ from markdown.inlinepatterns import LinkPattern
 import types
 from weakref import ref as weakref
 
-from lektor.context import get_ctx, url_to
+from lektor.context import get_ctx
 from lektor.pluginsystem import Plugin
 from lektor.types import Type
 from lektor.utils import bool_from_string
 from markupsafe import Markup
 from werkzeug.urls import url_parse
+
 
 
 SECTION_EXTENSIONS = "extensions"
@@ -29,13 +30,11 @@ def sanitize_url(self, link):
     """
     Patched function to resolve the url using Lektor.
     """
-    try:
+    if get_ctx() and get_ctx().record is not None:
         url = url_parse(link)
         if not url.scheme:
-            link = url_to(link)
-    except:
-        # Do not fail if something went wrong during the url parsing.
-        pass
+            link = get_ctx().record.url_to(link,
+                                      base_url=get_ctx().base_url)
     return LinkPattern.sanitize_url(self, link)
 
 
