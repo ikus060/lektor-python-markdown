@@ -42,14 +42,21 @@ class TestLektorPythonMarkdown(unittest.TestCase):
         # The output changes depending on the version of python-markdown uses.
         # assert '<pre class="codehilite"><code class="linenums">code here</code></pre>' in html
         # Check url & image substitution
-        assert '<a href="/fr/sub-page">Link to Sub Page</a>' in html
-        assert '<a href="/fr/sub-page-slug">Link to Slug</a>' in html
-        assert '<a href="/fr/invalid-page">Link to Invalid Page</a>' in html
+        assert '<a href="/fr/sub-page/">Link to Sub Page</a>' in html
+        assert '<a href="/fr/slug-url/">Link to Slug</a>' in html
+        assert '<a href="/invalid-page">Link to Invalid Page</a>' in html
         assert '<img alt="alttxt" src="/fr/logo.png" />' in html
         # Check references
         assert '<a href="/fr/sub-page/" title="Sub Page">Sub Page</a>' in html
         assert '<a href="http://search.yahoo.com/" title="Yahoo Search">Yahoo</a>' in html
         
+    def test_basic_alt_en(self):
+        failures = self.builder.build_all()
+        assert not failures
+        page_path = os.path.join(self.builder.destination_path, 'en/index.html')
+        html = open(page_path).read()
+        print(html)
+        assert '<img alt="alttxt" src="/fr/logo.png" />' in html
 
 
 if __name__ == "__main__":
