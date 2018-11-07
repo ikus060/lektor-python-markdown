@@ -7,17 +7,16 @@ Created on Jun 8, 2018
 import markdown
 from markdown.extensions import Extension
 from markdown.inlinepatterns import LinkPattern
+from markupsafe import Markup
 import types
 from weakref import ref as weakref
+from werkzeug.urls import url_parse
 
 from lektor.context import get_ctx
+from lektor.environment import PRIMARY_ALT
 from lektor.pluginsystem import Plugin
 from lektor.types import Type
 from lektor.utils import bool_from_string
-from markupsafe import Markup
-from werkzeug.urls import url_parse
-
-
 
 SECTION_EXTENSIONS = "extensions"
 SECTION_MARKDOWN = "markdown"
@@ -26,15 +25,25 @@ DEFAULT_EXTENTIONS = {
 }
 
 
-def sanitize_url(self, link):
+def sanitize_link(self, link):
     """
     Patched function to resolve the url using Lektor.
     """
     if get_ctx() and get_ctx().record is not None:
         url = url_parse(link)
         if not url.scheme:
-            link = get_ctx().record.url_to("!" + link,
-                                      base_url=get_ctx().base_url)
+            link = get_ctx().record.url_to(link, base_url=get_ctx().base_url)
+    return LinkPattern.sanitize_url(self, link)
+
+
+def sanitize_image(self, link):
+    """
+    Patched function to resolve the url using Lektor.
+    """
+    if get_ctx() and get_ctx().record is not None:
+        url = url_parse(link)
+        if not url.scheme:
+            link = get_ctx().record.url_to(link, alt=PRIMARY_ALT, base_url=get_ctx().base_url)
     return LinkPattern.sanitize_url(self, link)
 
 
@@ -45,17 +54,17 @@ class LektorMarkdownExtension(Extension):
     markdown rendered (mistune).
     """
     
-    def _patch(self, p):
+    def _patch(self, p, func):
         """
         Monkey patch the sanitize_url method.
         """
-        p.sanitize_url = types.MethodType(sanitize_url, p)
+        p.sanitize_url = types.MethodType(func, p)
 
     def extendMarkdown(self, md, md_globals):
-        self._patch(md.inlinePatterns['link'])
-        self._patch(md.inlinePatterns['image_link'])
-        self._patch(md.inlinePatterns['image_reference'])
-        self._patch(md.inlinePatterns['reference'])
+        self._patch(md.inlinePatterns['link'], sanitize_link)
+        self._patch(md.inlinePatterns['reference'], sanitize_link)
+        self._patch(md.inlinePatterns['image_link'], sanitize_image)
+        self._patch(md.inlinePatterns['image_reference'], sanitize_image)
 
 
 class PythonMarkdownConfig(object):
