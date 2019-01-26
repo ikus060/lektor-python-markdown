@@ -6,7 +6,10 @@ Created on Jun 8, 2018
 '''
 import markdown
 from markdown.extensions import Extension
-from markdown.inlinepatterns import LinkPattern
+
+# Markdown v3.x
+from markdown.inlinepatterns import Pattern
+
 from markupsafe import Markup
 import types
 from weakref import ref as weakref
@@ -33,7 +36,7 @@ def sanitize_link(self, link):
         url = url_parse(link)
         if not url.scheme:
             link = get_ctx().record.url_to(link, base_url=get_ctx().base_url)
-    return LinkPattern.sanitize_url(self, link)
+    return Pattern.unescape(self, link)
 
 
 def sanitize_image(self, link):
@@ -44,7 +47,7 @@ def sanitize_image(self, link):
         url = url_parse(link)
         if not url.scheme:
             link = get_ctx().record.url_to(link, alt=PRIMARY_ALT, base_url=get_ctx().base_url)
-    return LinkPattern.sanitize_url(self, link)
+    return Pattern.unescape(self, link)
 
 
 class LektorMarkdownExtension(Extension):
