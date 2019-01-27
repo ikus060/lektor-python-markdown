@@ -1,6 +1,9 @@
 # Lektor Python-Markdown Plugin
 
 [![pipeline status](http://git.patrikdufresne.com/pdsl/lektor-python-markdown/badges/master/pipeline.svg)](http://git.patrikdufresne.com/pdsl/lektor-python-markdown/commits/master)
+[![Python Versions](https://img.shields.io/pypi/pyversions/lektor-pythonmarkdown.svg)](https://pypi.org/project/lektor-pythonmarkdown/)
+[![Latest Versions](https://img.shields.io/pypi/v/lektor-pythonmarkdown.svg)](https://pypi.org/project/lektor-pythonmarkdown/)
+[![MIT License](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A [Lektor](https://www.getlektor.com/) plugin to parse markdown using
 [Python-Markdown](https://python-markdown.github.io/). By default, lektor
