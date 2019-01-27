@@ -1,8 +1,8 @@
 # Change logs
 
-## v1.1
+## v1.2
 
-Release date 26th of January, 2019
+Release date 27th of January, 2019
 
  - Support Markdown v2.x and v3.x
  

@@ -6,12 +6,9 @@ Created on Jun 8, 2018
 '''
 import markdown
 from markdown.extensions import Extension
-
-# Markdown v3.x
-from markdown.inlinepatterns import Pattern
-
 from markupsafe import Markup
 import types
+import traceback
 from weakref import ref as weakref
 from werkzeug.urls import url_parse
 
@@ -21,6 +18,7 @@ from lektor.pluginsystem import Plugin
 from lektor.types import Type
 from lektor.utils import bool_from_string
 
+
 SECTION_EXTENSIONS = "extensions"
 SECTION_MARKDOWN = "markdown"
 DEFAULT_EXTENTIONS = {
@@ -28,26 +26,48 @@ DEFAULT_EXTENTIONS = {
 }
 
 
-def sanitize_link(self, link):
+def sanitize_link( link):
     """
     Patched function to resolve the url using Lektor.
     """
     if get_ctx() and get_ctx().record is not None:
         url = url_parse(link)
         if not url.scheme:
-            link = get_ctx().record.url_to(link, base_url=get_ctx().base_url)
-    return Pattern.unescape(self, link)
+            return get_ctx().record.url_to(link, base_url=get_ctx().base_url)
+    return link
 
 
-def sanitize_image(self, link):
+def sanitize_image(link):
     """
     Patched function to resolve the url using Lektor.
     """
     if get_ctx() and get_ctx().record is not None:
         url = url_parse(link)
         if not url.scheme:
-            link = get_ctx().record.url_to(link, alt=PRIMARY_ALT, base_url=get_ctx().base_url)
-    return Pattern.unescape(self, link)
+            return get_ctx().record.url_to(link, alt=PRIMARY_ALT, base_url=get_ctx().base_url)
+    return link
+
+
+def handleMatch(self, *args, **kwargs):
+    """
+    Patched function to resolve the href/src using Lektor.
+    """
+    # Call the original function.
+    t = self._handleMatch(*args, **kwargs)  
+    if isinstance(t, tuple):
+        el = t[0]
+    else:
+        el = t
+    if el is None:
+        return t
+        
+    # Resolv link using lektor
+    if el.get('href'):
+        el.set('href', sanitize_link(el.get('href')))        
+    if el.get('src'):
+        el.set('src', sanitize_image(el.get('src')))
+    
+    return t
 
 
 class LektorMarkdownExtension(Extension):
@@ -61,13 +81,14 @@ class LektorMarkdownExtension(Extension):
         """
         Monkey patch the sanitize_url method.
         """
-        p.sanitize_url = types.MethodType(func, p)
+        p._handleMatch = p.handleMatch 
+        p.handleMatch = types.MethodType(func, p)
 
-    def extendMarkdown(self, md, md_globals):
-        self._patch(md.inlinePatterns['link'], sanitize_link)
-        self._patch(md.inlinePatterns['reference'], sanitize_link)
-        self._patch(md.inlinePatterns['image_link'], sanitize_image)
-        self._patch(md.inlinePatterns['image_reference'], sanitize_image)
+    def extendMarkdown(self, md, md_globals={}):
+        self._patch(md.inlinePatterns['link'], handleMatch)
+        self._patch(md.inlinePatterns['reference'], handleMatch)
+        self._patch(md.inlinePatterns['image_link'], handleMatch)
+        self._patch(md.inlinePatterns['image_reference'], handleMatch)
 
 
 class PythonMarkdownConfig(object):
@@ -121,7 +142,10 @@ def pythonmarkdown_to_html(text, record=None):
         raise RuntimeError('PythonMarkdownPLugin is required for python-markdown rendering')    
     cfg = PythonMarkdownConfig(plugin.get_config())
     # TODO May need to emit event to let other plugin hook into this one.
-    return markdown.markdown(text, **cfg.options)
+    try:
+        return markdown.markdown(text, **cfg.options)
+    except:
+        return "pythonmarkdown error: " + traceback.format_exc()
 
 
 class PythonMarkdown(object):

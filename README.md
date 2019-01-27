@@ -59,7 +59,6 @@ In that file you may write something similar to the following:
 markdown.extensions.extra = 1
 markdown.extensions.admonition = 1
 markdown.extensions.codehilite = 1
-markdown.extensions.headerid = 1
 markdown.extensions.meta = 1
 markdown.extensions.nl2br = 1
 markdown.extensions.sane_lists = 1
