@@ -77,3 +77,6 @@ linenums = True
 #use_pygments = True
 
 ```
+
+# References
+* [Lektor-PythonMarkdown plugin](http://www.patrikdufresne.com/en/blog/2018-11-21-lektor-python-markdown/)
